@@ -1,0 +1,15 @@
+{
+  "marketPath": "D:\\MyProject\\claude\\ClaudeMarket",
+  "projects": [
+    {
+      "id": "84811d77-812f-40db-b2f0-36e068462359",
+      "alias": "Demo1",
+      "path": "D:\\MyProject\\claude\\Test\\Demo1"
+    },
+    {
+      "id": "036ba799-5bf5-4d2e-aec4-296c0e14f4d0",
+      "alias": "Demo2",
+      "path": "D:\\MyProject\\claude\\Test\\Demo2"
+    }
+  ]
+}

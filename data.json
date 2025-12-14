@@ -11,5 +11,12 @@
       "alias": "Demo2",
       "path": "D:\\MyProject\\claude\\Test\\Demo2"
     }
+  ],
+  "externalMarkets": [
+    {
+      "name": "claude-code",
+      "url": "https://github.com/anthropics/claude-code.git",
+      "type": "github"
+    }
   ]
 }

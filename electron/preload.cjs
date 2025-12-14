@@ -25,6 +25,21 @@ contextBridge.exposeInMainWorld('config', {
   get: () => ipcRenderer.invoke('config:get'),
   set: (cfg) => ipcRenderer.invoke('config:set', cfg)
 })
+contextBridge.exposeInMainWorld('privateMarket', {
+  clone: () => ipcRenderer.invoke('privateMarket:clone'),
+  pull: () => ipcRenderer.invoke('privateMarket:pull'),
+  push: (message) => ipcRenderer.invoke('privateMarket:push', message)
+})
+contextBridge.exposeInMainWorld('external', {
+  addSource: (text) => ipcRenderer.invoke('external:addSource', text),
+  listSources: () => ipcRenderer.invoke('external:listSources'),
+  probeSource: (text) => ipcRenderer.invoke('external:probeSource', text)
+})
+contextBridge.exposeInMainWorld('externalAPI', {
+  addSource: (text) => ipcRenderer.invoke('external:addSource', text),
+  listSources: () => ipcRenderer.invoke('external:listSources'),
+  probeSource: (text) => ipcRenderer.invoke('external:probeSource', text)
+})
 contextBridge.exposeInMainWorld('library', {
   list: () => ipcRenderer.invoke('library:list'),
   importLib: (repo, overwrite) => ipcRenderer.invoke('library:import', repo, overwrite)

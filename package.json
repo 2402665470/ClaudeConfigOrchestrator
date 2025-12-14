@@ -2,36 +2,44 @@
   "name": "claude-config-distributor",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
-  "main": "electron/main.js",
+  "main": "dist/main/main/index.js",
   "scripts": {
-    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev": "concurrently -k \"npm run build:main && npm run build:preload && vite --port 5173 --strictPort\" \"wait-on http://localhost:5173 && electron .\"",
     "build": "vite build",
+    "build:main": "tsc -p tsconfig.main.json",
+    "build:preload": "tsc -p tsconfig.preload.json && cp dist/main/preload.js electron/preload.js",
     "typecheck": "tsc --noEmit",
     "electron": "electron .",
     "lint": "eslint \"src/**/*.{ts,tsx,js}\"",
     "dist": "electron-builder -c"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "@types/node-fetch": "^2.6.13",
+    "fast-glob": "^3.3.2",
+    "framer-motion": "^12.23.26",
     "fs-extra": "^11.2.0",
     "lodash.merge": "^4.6.2",
-    "fast-glob": "^3.3.2"
+    "lucide-react": "^0.561.0",
+    "node-fetch": "^3.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "yaml": "^2.8.2",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@typescript-eslint/eslint-plugin": "^8.10.0",
+    "@typescript-eslint/parser": "^8.10.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
     "concurrently": "^8.2.2",
     "electron": "^32.2.0",
-    "@vitejs/plugin-react": "^4.3.1",
+    "electron-builder": "^24.9.3",
+    "eslint": "^9.12.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3",
     "vite": "^5.4.8",
-    "wait-on": "^7.2.0",
-    "electron-builder": "^24.9.3",
-    "eslint": "^9.12.0",
-    "@typescript-eslint/eslint-plugin": "^8.10.0",
-    "@typescript-eslint/parser": "^8.10.0"
+    "wait-on": "^7.2.0"
   }
 }

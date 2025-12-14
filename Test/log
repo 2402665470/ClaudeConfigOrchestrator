@@ -1,0 +1,126 @@
+[CapabilityLibrary] 开始加载插件...
+CapabilityLibraryPage.tsx:27 [CapabilityLibrary] 开始加载插件...
+CapabilityLibraryPage.tsx:29 [CapabilityLibrary] 已安装插件 (总数: 20 ): (20) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 1 个插件的详情: pr-review-toolkit@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 2 个插件的详情: feature-dev@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 3 个插件的详情: commit-commands@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 4 个插件的详情: autonomous-skill@claude-code-settings
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 5 个插件的详情: spec-kit-skill@claude-code-settings
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 6 个插件的详情: plugin-dev@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 7 个插件的详情: code-review@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 8 个插件的详情: frontend-design@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 9 个插件的详情: explanatory-output-style@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 10 个插件的详情: hookify@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 11 个插件的详情: dotai@dotai
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 12 个插件的详情: debugging-toolkit@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 13 个插件的详情: tdd-workflows@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 14 个插件的详情: error-debugging@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 15 个插件的详情: plan@dotai
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 16 个插件的详情: skills@dotai
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 17 个插件的详情: git@dotai
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 18 个插件的详情: dependency-management@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 19 个插件的详情: cicd-automation@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 20 个插件的详情: claude-code-settings@claude-code-settings
+CapabilityLibraryPage.tsx:29 [CapabilityLibrary] 已安装插件 (总数: 20 ): (20) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 1 个插件的详情: pr-review-toolkit@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 2 个插件的详情: feature-dev@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 3 个插件的详情: commit-commands@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 4 个插件的详情: autonomous-skill@claude-code-settings
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 5 个插件的详情: spec-kit-skill@claude-code-settings
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 6 个插件的详情: plugin-dev@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 7 个插件的详情: code-review@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 8 个插件的详情: frontend-design@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 9 个插件的详情: explanatory-output-style@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 10 个插件的详情: hookify@claude-code-plugins
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 11 个插件的详情: dotai@dotai
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 12 个插件的详情: debugging-toolkit@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 13 个插件的详情: tdd-workflows@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 14 个插件的详情: error-debugging@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 15 个插件的详情: plan@dotai
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 16 个插件的详情: skills@dotai
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 17 个插件的详情: git@dotai
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 18 个插件的详情: dependency-management@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 19 个插件的详情: cicd-automation@claude-code-workflows
+CapabilityLibraryPage.tsx:34 [CapabilityLibrary] 正在获取第 20 个插件的详情: claude-code-settings@claude-code-settings
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 code-review@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\code-review\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'code-review', description: 'Automated code review for pull requests using mult… specialized agents with confidence-based scoring', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 code-review@claude-code-plugins 包含的能力: {commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 explanatory-output-style@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\explanatory-output-style\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'explanatory-output-style', description: 'Adds educational insights about implementation cho… (mimics the deprecated Explanatory output style)', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 explanatory-output-style@claude-code-plugins 包含的能力: {hooks: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 commit-commands@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\commit-commands\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'commit-commands', description: 'Streamline your git workflow with simple commands …r committing, pushing, and creating pull requests', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 commit-commands@claude-code-plugins 包含的能力: {commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 dependency-management@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\dependency-management\\1.2.0', version: '1.2.0', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 dependency-management@claude-code-workflows 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 debugging-toolkit@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\debugging-toolkit\\1.2.0', version: '1.2.0', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 debugging-toolkit@claude-code-workflows 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 code-review@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\code-review\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'code-review', description: 'Automated code review for pull requests using mult… specialized agents with confidence-based scoring', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 code-review@claude-code-plugins 包含的能力: {commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 explanatory-output-style@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\explanatory-output-style\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'explanatory-output-style', description: 'Adds educational insights about implementation cho… (mimics the deprecated Explanatory output style)', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 explanatory-output-style@claude-code-plugins 包含的能力: {hooks: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 dependency-management@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\dependency-management\\1.2.0', version: '1.2.0', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 dependency-management@claude-code-workflows 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 debugging-toolkit@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\debugging-toolkit\\1.2.0', version: '1.2.0', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 debugging-toolkit@claude-code-workflows 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 feature-dev@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\feature-dev\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'feature-dev', description: 'Comprehensive feature development workflow with sp…loration, architecture design, and quality review', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 feature-dev@claude-code-plugins 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 error-debugging@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\error-debugging\\1.2.0', version: '1.2.0', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 error-debugging@claude-code-workflows 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 commit-commands@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\commit-commands\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'commit-commands', description: 'Streamline your git workflow with simple commands …r committing, pushing, and creating pull requests', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 commit-commands@claude-code-plugins 包含的能力: {commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 autonomous-skill@claude-code-settings 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-settings\\autonomous-skill\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'autonomous-skill', description: 'Use when user wants to execute long-running tasks …ask, multi-session, 自主执行, 长时任务, autonomous skill.', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 autonomous-skill@claude-code-settings 包含的能力: {skills: Array(1)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 spec-kit-skill@claude-code-settings 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-settings\\spec-kit-skill\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'spec-kit-skill', description: 'GitHub Spec-Kit integration for constitution-based spec-driven development (7-phase workflow)', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 spec-kit-skill@claude-code-settings 包含的能力: {skills: Array(1)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 tdd-workflows@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\tdd-workflows\\1.2.1', version: '1.2.1', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 tdd-workflows@claude-code-workflows 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 error-debugging@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\error-debugging\\1.2.0', version: '1.2.0', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 error-debugging@claude-code-workflows 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 pr-review-toolkit@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\pr-review-toolkit\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'pr-review-toolkit', description: 'Comprehensive PR review agents specializing in com…ype design, code quality, and code simplification', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 pr-review-toolkit@claude-code-plugins 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 frontend-design@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\frontend-design\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'frontend-design', description: 'Frontend design skill for UI/UX implementation', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 frontend-design@claude-code-plugins 包含的能力: {skills: Array(1)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 feature-dev@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\feature-dev\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'feature-dev', description: 'Comprehensive feature development workflow with sp…loration, architecture design, and quality review', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 feature-dev@claude-code-plugins 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 tdd-workflows@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\tdd-workflows\\1.2.1', version: '1.2.1', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 tdd-workflows@claude-code-workflows 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 spec-kit-skill@claude-code-settings 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-settings\\spec-kit-skill\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'spec-kit-skill', description: 'GitHub Spec-Kit integration for constitution-based spec-driven development (7-phase workflow)', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 spec-kit-skill@claude-code-settings 包含的能力: {skills: Array(1)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 autonomous-skill@claude-code-settings 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-settings\\autonomous-skill\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'autonomous-skill', description: 'Use when user wants to execute long-running tasks …ask, multi-session, 自主执行, 长时任务, autonomous skill.', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 autonomous-skill@claude-code-settings 包含的能力: {skills: Array(1)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 frontend-design@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\frontend-design\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'frontend-design', description: 'Frontend design skill for UI/UX implementation', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 frontend-design@claude-code-plugins 包含的能力: {skills: Array(1)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 pr-review-toolkit@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\pr-review-toolkit\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'pr-review-toolkit', description: 'Comprehensive PR review agents specializing in com…ype design, code quality, and code simplification', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 pr-review-toolkit@claude-code-plugins 包含的能力: {commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 dotai@dotai 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\dotai\\dotai\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'dotai', description: 'Complete development toolkit - documentation, PRDs…esign docs, debugging, PR workflows, and planning', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 dotai@dotai 包含的能力: {commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 dotai@dotai 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\dotai\\dotai\\1.0.0', version: '1.0.0', capabilities: {…}, name: 'dotai', description: 'Complete development toolkit - documentation, PRDs…esign docs, debugging, PR workflows, and planning', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 dotai@dotai 包含的能力: {commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 skills@dotai 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\dotai\\skills\\0.1.0', version: '0.1.0', capabilities: {…}, name: 'skills', description: 'Meta-skills for finding, using, and writing Agent …e protocols and provides skill authoring guidance', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 skills@dotai 包含的能力: {skills: Array(2), commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 skills@dotai 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\dotai\\skills\\0.1.0', version: '0.1.0', capabilities: {…}, name: 'skills', description: 'Meta-skills for finding, using, and writing Agent …e protocols and provides skill authoring guidance', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 skills@dotai 包含的能力: {skills: Array(2), commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 hookify@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\hookify\\0.1.0', version: '0.1.0', capabilities: {…}, name: 'hookify', description: 'Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 hookify@claude-code-plugins 包含的能力: {skills: Array(1), commands: Array(0), agents: Array(0), hooks: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 hookify@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\hookify\\0.1.0', version: '0.1.0', capabilities: {…}, name: 'hookify', description: 'Easily create hooks to prevent unwanted behaviors by analyzing conversation patterns', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 hookify@claude-code-plugins 包含的能力: {skills: Array(1), commands: Array(0), agents: Array(0), hooks: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 plan@dotai 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\dotai\\plan\\0.1.0', version: '0.1.0', capabilities: {…}, name: 'plan', description: 'Planning and brainstorming workflows for software … designs and create detailed implementation plans', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 plan@dotai 包含的能力: {skills: Array(3), commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 git@dotai 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\dotai\\git\\0.1.0', version: '0.1.0', capabilities: {…}, name: 'git', description: 'Git and GitHub workflow automation - streamlined P…tion, draft management, and code review workflows', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 git@dotai 包含的能力: {skills: Array(3), commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 git@dotai 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\dotai\\git\\0.1.0', version: '0.1.0', capabilities: {…}, name: 'git', description: 'Git and GitHub workflow automation - streamlined P…tion, draft management, and code review workflows', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 git@dotai 包含的能力: {skills: Array(3), commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 plan@dotai 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\dotai\\plan\\0.1.0', version: '0.1.0', capabilities: {…}, name: 'plan', description: 'Planning and brainstorming workflows for software … designs and create detailed implementation plans', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 plan@dotai 包含的能力: {skills: Array(3), commands: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 cicd-automation@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\cicd-automation\\1.2.1', version: '1.2.1', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 cicd-automation@claude-code-workflows 包含的能力: {skills: Array(4), commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 cicd-automation@claude-code-workflows 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-workflows\\cicd-automation\\1.2.1', version: '1.2.1', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 cicd-automation@claude-code-workflows 包含的能力: {skills: Array(4), commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 claude-code-settings@claude-code-settings 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-settings\\claude-code-settings\\2.1.0', version: '2.1.0', capabilities: {…}, name: 'claude-code-settings', description: 'Claude Code settings and skills for spec-driven development workflows', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 claude-code-settings@claude-code-settings 包含的能力: {skills: Array(0), commands: Array(0), agents: Array(0), settings: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 plugin-dev@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\plugin-dev\\0.1.0', version: '0.1.0', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 plugin-dev@claude-code-plugins 包含的能力: {skills: Array(7), commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:50 [CapabilityLibrary] 所有插件详情加载完成
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 claude-code-settings@claude-code-settings 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-settings\\claude-code-settings\\2.1.0', version: '2.1.0', capabilities: {…}, name: 'claude-code-settings', description: 'Claude Code settings and skills for spec-driven development workflows', …}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 claude-code-settings@claude-code-settings 包含的能力: {skills: Array(0), commands: Array(0), agents: Array(0), settings: Array(0)}
+CapabilityLibraryPage.tsx:37 [CapabilityLibrary] 插件 plugin-dev@claude-code-plugins 详情: {installPath: 'C:\\Users\\Administrator\\.claude\\plugins\\cache\\claude-code-plugins\\plugin-dev\\0.1.0', version: '0.1.0', capabilities: {…}, source: 'installed'}
+CapabilityLibraryPage.tsx:38 [CapabilityLibrary] 插件 plugin-dev@claude-code-plugins 包含的能力: {skills: Array(7), commands: Array(0), agents: Array(0)}
+CapabilityLibraryPage.tsx:50 [CapabilityLibrary] 所有插件详情加载完成

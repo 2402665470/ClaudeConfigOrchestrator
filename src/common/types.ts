@@ -19,12 +19,19 @@ export type AppSettings = {
   privateMarket: PrivateMarketConfig
 }
 
+// 自定义描述存储
+export type CustomDescriptions = {
+  plugins?: Record<string, string>  // 插件ID -> 自定义描述
+  capabilities?: Record<string, string>  // 能力ID -> 自定义描述
+}
+
 export type AppData = {
   marketPath: string
   projects: Project[]
   hiddenProjects: Project[]  // 隐藏的项目列表
   appSettings?: AppSettings
   externalMarkets?: ExternalMarketSource[]
+  customDescriptions?: CustomDescriptions  // 自定义描述存储
 }
 
 export type Project = {

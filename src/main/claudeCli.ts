@@ -176,6 +176,40 @@ export class ClaudeCliService {
   }
 
   /**
+   * 卸载插件
+   */
+  async uninstallPlugin(pluginId: string, scope: 'user' | 'project' | 'local' = 'user', projectPath?: string): Promise<void> {
+    log.info(`Uninstalling plugin: ${pluginId} with scope: ${scope}`);
+
+    let command = `plugin uninstall -s ${scope} ${pluginId}`;
+    await this.executeCommand(command);
+
+    // 如果是项目级卸载，需要从项目设置中移除插件
+    if (scope === 'project' && projectPath) {
+      await this.disablePluginInProject(pluginId, projectPath);
+    }
+  }
+
+  /**
+   * 在项目中禁用插件
+   */
+  private async disablePluginInProject(pluginId: string, projectPath: string): Promise<void> {
+    log.info(`Disabling plugin ${pluginId} in project ${projectPath}`);
+
+    const settingsPath = path.join(projectPath, '.claude/settings.json');
+
+    if (await fs.pathExists(settingsPath)) {
+      const settings = await fs.readJson(settingsPath);
+
+      if (settings.enabledPlugins && settings.enabledPlugins[pluginId]) {
+        delete settings.enabledPlugins[pluginId];
+        await fs.writeJson(settingsPath, settings, { spaces: 2 });
+        log.info(`Plugin ${pluginId} disabled in project`);
+      }
+    }
+  }
+
+  /**
    * 获取已安装的插件
    */
   async getInstalledPlugins(): Promise<InstalledPlugin[]> {

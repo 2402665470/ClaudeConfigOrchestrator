@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Plugin } from '@common/types';
+import DescriptionToggle from '../components/DescriptionToggle';
+import DescriptionEditor from '../components/DescriptionEditor';
 
 // 能力类型配置
 const capabilityTypes = [
@@ -20,6 +22,10 @@ export default function CapabilityLibraryPage() {
   const [selectedCapability, setSelectedCapability] = useState<any>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
+  // 自定义描述相关状态
+  const [customDescriptions, setCustomDescriptions] = useState<Record<string, string | null>>({});
+  const [editingCapability, setEditingCapability] = useState<string | null>(null);
+
   // 加载已安装的插件及其能力详情
   useEffect(() => {
     const loadPlugins = async () => {
@@ -37,6 +43,10 @@ export default function CapabilityLibraryPage() {
               const details = await window.electronAPI.getPluginInfo(plugin.id);
               console.log(`[CapabilityLibrary] 插件 ${plugin.id} 详情:`, details);
               console.log(`[CapabilityLibrary] 插件 ${plugin.id} 包含的能力:`, details?.capabilities);
+              if (details?.capabilities) {
+                console.log(`[CapabilityLibrary] 插件 ${plugin.id} configs 类型:`, details.capabilities.configs);
+                console.log(`[CapabilityLibrary] 插件 ${plugin.id} configs 数量:`, Array.isArray(details.capabilities.configs) ? details.capabilities.configs.length : 0);
+              }
               return {
                 ...plugin,
                 details
@@ -100,6 +110,26 @@ export default function CapabilityLibraryPage() {
     return capabilities;
   }, [installedPlugins]);
 
+  // 加载自定义描述
+  useEffect(() => {
+    const loadCustomDescriptions = async () => {
+      const capabilityIds = allCapabilities.map(cap =>
+        `${cap.pluginId}:${cap.type}:${cap.name}`
+      );
+
+      if (capabilityIds.length > 0) {
+        try {
+          const descriptions = await window.electronAPI.getBatchDescriptions(capabilityIds, 'capability');
+          setCustomDescriptions(descriptions);
+        } catch (error) {
+          console.error('Failed to load custom descriptions:', error);
+        }
+      }
+    };
+
+    loadCustomDescriptions();
+  }, [allCapabilities]);
+
   // 过滤能力
   const filteredCapabilities = useMemo(() => {
     return allCapabilities.filter(capability => {
@@ -111,16 +141,19 @@ export default function CapabilityLibraryPage() {
       // 搜索筛选
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
+        const customDesc = customDescriptions[`${capability.pluginId}:${capability.type}:${capability.name}`];
+
         if (!capability.name?.toLowerCase().includes(searchLower) &&
             !capability.description?.toLowerCase().includes(searchLower) &&
-            !capability.pluginName?.toLowerCase().includes(searchLower)) {
+            !capability.pluginName?.toLowerCase().includes(searchLower) &&
+            !customDesc?.toLowerCase().includes(searchLower)) {
           return false;
         }
       }
 
       return true;
     });
-  }, [allCapabilities, searchTerm, selectedCategory]);
+  }, [allCapabilities, searchTerm, selectedCategory, customDescriptions]);
 
   // 处理能力点击
   const handleCapabilityClick = async (capability: any) => {
@@ -138,6 +171,43 @@ export default function CapabilityLibraryPage() {
       // 即使获取失败，也显示基本信息
       setSelectedCapability(capability);
       setShowDetailModal(true);
+    }
+  };
+
+  // 处理编辑描述
+  const handleEditDescription = (capabilityId: string) => {
+    setEditingCapability(capabilityId);
+  };
+
+  // 保存自定义描述
+  const handleSaveDescription = async (capabilityId: string, description: string) => {
+    try {
+      await window.electronAPI.setCapabilityDescription(capabilityId, description);
+      // 更新本地状态
+      setCustomDescriptions(prev => ({
+        ...prev,
+        [capabilityId]: description || null
+      }));
+      setEditingCapability(null);
+    } catch (error) {
+      console.error('Failed to save description:', error);
+      alert('保存失败');
+    }
+  };
+
+  // 删除自定义描述
+  const handleDeleteDescription = async (capabilityId: string) => {
+    try {
+      await window.electronAPI.deleteCapabilityDescription(capabilityId);
+      // 更新本地状态
+      setCustomDescriptions(prev => {
+        const newState = { ...prev };
+        delete newState[capabilityId];
+        return newState;
+      });
+    } catch (error) {
+      console.error('Failed to delete description:', error);
+      alert('删除失败');
     }
   };
 
@@ -277,18 +347,13 @@ export default function CapabilityLibraryPage() {
                   </h3>
 
                   {/* 能力描述 */}
-                  {capability.description && (
-                    <p
-                      className="text-sm text-gray-600 mb-3 overflow-hidden"
-                      style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: 'vertical'
-                      }}
-                    >
-                      {capability.description}
-                    </p>
-                  )}
+                  <div className="mb-3">
+                    <DescriptionToggle
+                      originalDescription={capability.description || '无描述'}
+                      customDescription={customDescriptions[`${capability.pluginId}:${capability.type}:${capability.name}`]}
+                      onEdit={() => handleEditDescription(`${capability.pluginId}:${capability.type}:${capability.name}`)}
+                    />
+                  </div>
 
                   {/* 底部信息 */}
                   <div className="flex items-center justify-between text-xs text-gray-500">
@@ -446,6 +511,19 @@ export default function CapabilityLibraryPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* 描述编辑器弹窗 */}
+        {editingCapability && (
+          <DescriptionEditor
+            type="capability"
+            id={editingCapability}
+            originalDescription={selectedCapability?.description || ''}
+            customDescription={customDescriptions[editingCapability]}
+            onSave={(description) => handleSaveDescription(editingCapability, description)}
+            onDelete={() => handleDeleteDescription(editingCapability)}
+            onCancel={() => setEditingCapability(null)}
+          />
         )}
       </div>
     </div>

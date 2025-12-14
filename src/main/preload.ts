@@ -43,7 +43,19 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.invoke('scenes:apply', sceneId, targetPath, strategy),
 
   // 编辑器
-  openInEditor: (filePath: string) => ipcRenderer.invoke('editor:open', filePath)
+  openInEditor: (filePath: string) => ipcRenderer.invoke('editor:open', filePath),
+
+  // 自定义描述管理
+  getPluginDescription: (pluginId: string) => ipcRenderer.invoke('custom:getPluginDescription', pluginId),
+  setPluginDescription: (pluginId: string, description: string) =>
+    ipcRenderer.invoke('custom:setPluginDescription', pluginId, description),
+  getCapabilityDescription: (capabilityId: string) => ipcRenderer.invoke('custom:getCapabilityDescription', capabilityId),
+  setCapabilityDescription: (capabilityId: string, description: string) =>
+    ipcRenderer.invoke('custom:setCapabilityDescription', capabilityId, description),
+  getBatchDescriptions: (ids: string[], type: 'plugin' | 'capability') =>
+    ipcRenderer.invoke('custom:getBatchDescriptions', ids, type),
+  deletePluginDescription: (pluginId: string) => ipcRenderer.invoke('custom:deletePluginDescription', pluginId),
+  deleteCapabilityDescription: (capabilityId: string) => ipcRenderer.invoke('custom:deleteCapabilityDescription', capabilityId)
 });
 
 declare global {
@@ -87,6 +99,15 @@ declare global {
 
       // 编辑器
       openInEditor(filePath: string): Promise<boolean>;
+
+      // 自定义描述管理
+      getPluginDescription(pluginId: string): Promise<string | null>;
+      setPluginDescription(pluginId: string, description: string): Promise<{ success: boolean; error?: string }>;
+      getCapabilityDescription(capabilityId: string): Promise<string | null>;
+      setCapabilityDescription(capabilityId: string, description: string): Promise<{ success: boolean; error?: string }>;
+      getBatchDescriptions(ids: string[], type: 'plugin' | 'capability'): Promise<Record<string, string | null>>;
+      deletePluginDescription(pluginId: string): Promise<{ success: boolean; error?: string }>;
+      deleteCapabilityDescription(capabilityId: string): Promise<{ success: boolean; error?: string }>;
     };
   }
 }

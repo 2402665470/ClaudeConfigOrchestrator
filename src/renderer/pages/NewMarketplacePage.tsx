@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAppStore } from '../stores/app';
+import ImprovedPluginDetailModal from '../components/ImprovedPluginDetailModal';
 
 interface Marketplace {
   name: string;
@@ -191,9 +192,75 @@ export default function NewMarketplacePage() {
     return types[type] || { name: type, icon: '📦', color: 'gray' };
   };
 
-  // 查看插件详情（只显示基本信息）
+  // 获取能力样式（为 ImprovedPluginDetailModal 提供）
+  const getCapabilityStyle = (type: string) => {
+    const styles: Record<string, { icon: string; color: string }> = {
+      agents: { icon: '🤖', color: 'bg-purple-100 text-purple-700' },
+      skills: { icon: '⚡', color: 'bg-blue-100 text-blue-700' },
+      commands: { icon: '🪝', color: 'bg-green-100 text-green-700' },
+      hooks: { icon: '🔗', color: 'bg-yellow-100 text-yellow-700' },
+      mcpServers: { icon: '🔌', color: 'bg-red-100 text-red-700' },
+      configs: { icon: '⚙️', color: 'bg-gray-100 text-gray-700' }
+    };
+    return styles[type] || { icon: '📦', color: 'bg-gray-100 text-gray-700' };
+  };
+
+  // 将外部市场插件数据转换为 ImprovedPluginDetailModal 需要的格式
+  const convertToPluginDetailFormat = (plugin: PluginDetail) => {
+    // 转换能力数据格式
+    const capabilities: Record<string, any[]> = {};
+    const stats = { totalCapabilities: 0, capabilitiesByType: {} as Record<string, number> };
+
+    Object.entries(plugin.capabilities || {}).forEach(([type, items]) => {
+      if (!items) return;
+
+      let convertedItems: any[] = [];
+
+      if (Array.isArray(items)) {
+        convertedItems = items.map(item => ({
+          name: typeof item === 'string' ? item : item.name,
+          description: item.description || `A ${type} capability`,
+          type: item.type || 'general'
+        }));
+      } else if (typeof items === 'object') {
+        convertedItems = Object.entries(items).map(([name, path]) => ({
+          name,
+          description: `A ${type} capability`,
+          filePath: path as string
+        }));
+      }
+
+      capabilities[type] = convertedItems;
+      stats.capabilitiesByType[type] = convertedItems.length;
+      stats.totalCapabilities += convertedItems.length;
+    });
+
+    return {
+      id: plugin.meta.id,
+      name: plugin.name,
+      description: plugin.description,
+      version: plugin.version || plugin.meta.version || '1.0.0',
+      marketplace: plugin.meta.id.split('@')[1] || 'unknown',
+      scope: 'user' as const,
+      installed: plugin.installed || false,
+      installedAt: new Date().toISOString(),
+      metadata: {
+        description: plugin.meta.description || plugin.description,
+        version: plugin.meta.version || plugin.version
+      },
+      capabilities,
+      stats
+    };
+  };
+
+  // 查看插件详情（使用 ImprovedPluginDetailModal）
   const handleViewPluginDetails = (plugin: PluginDetail) => {
     setSelectedPlugin(plugin);
+  };
+
+  // 关闭插件详情
+  const handleClosePluginDetail = () => {
+    setSelectedPlugin(null);
   };
 
   // 安装插件
@@ -236,6 +303,43 @@ export default function NewMarketplacePage() {
     } catch (error: any) {
       console.error('安装失败:', error);
       alert('安装失败：' + error.message);
+    } finally {
+      setInstallingPluginId(null);
+    }
+  };
+
+  // 卸载插件
+  const handleUninstallPlugin = async (plugin: PluginDetail) => {
+    if (!window.electronAPI?.uninstallPlugin) {
+      alert('API 不可用');
+      return;
+    }
+
+    const confirmed = confirm(`确定要卸载插件 "${plugin.name}" 吗？`);
+    if (!confirmed) return;
+
+    setInstallingPluginId(plugin.meta.id);
+    try {
+      // 使用完整的插件ID卸载
+      const result = await window.electronAPI.uninstallPlugin(plugin.meta.id, 'user');
+      if (result.success) {
+        // 更新安装状态
+        setInstalledPlugins(prev => prev.filter(id => id !== plugin.meta.id));
+
+        // 更新插件列表中的安装状态
+        setPlugins(prev => prev.map(p =>
+          p.meta.id === plugin.meta.id
+            ? { ...p, installed: false }
+            : p
+        ));
+
+        alert(`插件 "${plugin.name}" 已成功卸载！`);
+      } else {
+        alert(`卸载失败：${result.error}`);
+      }
+    } catch (error: any) {
+      console.error('卸载失败:', error);
+      alert('卸载失败：' + error.message);
     } finally {
       setInstallingPluginId(null);
     }
@@ -394,20 +498,18 @@ export default function NewMarketplacePage() {
                   <p className="text-sm text-zinc-600 mb-3">{plugin.meta.description}</p>
                 )}
 
-                {/* 能力类型统计 */}
-                <div className="space-y-2 mb-3">
+                {/* 能力类型统计 - 排成一行 */}
+                <div className="flex flex-wrap gap-2 mb-3">
                   {Object.entries(plugin.capabilities).map(([type, items]) => {
                     if (!items || (typeof items === 'object' && Object.keys(items).length === 0)) return null;
                     const typeInfo = getCapabilityTypeInfo(type);
                     const count = typeof items === 'object' ? Object.keys(items).length : 1;
 
                     return (
-                      <div key={type} className="flex items-center gap-2 text-xs">
+                      <span key={type} className="flex items-center gap-1 text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
                         <span>{typeInfo.icon}</span>
-                        <span className={`bg-${typeInfo.color}-50 text-${typeInfo.color}-700 px-2 py-1 rounded`}>
-                          {typeInfo.name}: {count}
-                        </span>
-                      </div>
+                        {typeInfo.name}: {count}
+                      </span>
                     );
                   })}
                 </div>
@@ -419,28 +521,47 @@ export default function NewMarketplacePage() {
                   >
                     查看详情
                   </button>
-                  <button
-                    onClick={() => handleInstallPlugin(plugin)}
-                    disabled={plugin.installed || installingPluginId === plugin.meta.id}
-                    className={`flex-1 px-3 py-1 text-sm rounded transition-all duration-300 ${
-                      plugin.installed
-                        ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                        : installingPluginId === plugin.meta.id
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-green-600 text-white hover:bg-green-700 active:scale-95'
-                    }`}
-                  >
-                    {plugin.installed ? '已安装' :
-                     installingPluginId === plugin.meta.id ? (
-                       <span className="flex items-center justify-center">
-                         <svg className="animate-spin h-4 w-4 mr-2" viewBox="0 0 24 24">
-                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                         </svg>
-                         安装中...
-                       </span>
-                     ) : '安装'}
-                  </button>
+                  {plugin.installed ? (
+                    <button
+                      onClick={() => handleUninstallPlugin(plugin)}
+                      disabled={installingPluginId === plugin.meta.id}
+                      className={`flex-1 px-3 py-1 text-sm rounded transition-all duration-300 ${
+                        installingPluginId === plugin.meta.id
+                          ? 'bg-red-500 text-white'
+                          : 'bg-red-600 text-white hover:bg-red-700 active:scale-95'
+                      }`}
+                    >
+                      {installingPluginId === plugin.meta.id ? (
+                        <span className="flex items-center justify-center">
+                          <svg className="animate-spin h-4 w-4 mr-2" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          卸载中...
+                        </span>
+                      ) : '卸载'}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleInstallPlugin(plugin)}
+                      disabled={installingPluginId === plugin.meta.id}
+                      className={`flex-1 px-3 py-1 text-sm rounded transition-all duration-300 ${
+                        installingPluginId === plugin.meta.id
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-green-600 text-white hover:bg-green-700 active:scale-95'
+                      }`}
+                    >
+                      {installingPluginId === plugin.meta.id ? (
+                        <span className="flex items-center justify-center">
+                          <svg className="animate-spin h-4 w-4 mr-2" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          安装中...
+                        </span>
+                      ) : '安装'}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -462,85 +583,13 @@ export default function NewMarketplacePage() {
         </button>
       </div>
 
-      <div className="bg-white border border-zinc-200 rounded-lg p-6">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-2">{selectedPlugin.meta.name}</h2>
-          {selectedPlugin.meta.version && (
-            <span className="text-sm bg-zinc-100 text-zinc-600 px-2 py-1 rounded">
-              版本 {selectedPlugin.meta.version}
-            </span>
-          )}
-          {selectedPlugin.meta.description && (
-            <p className="text-zinc-600 mt-2">{selectedPlugin.meta.description}</p>
-          )}
-        </div>
-
-        {Object.keys(selectedPlugin.capabilities || {}).length > 0 ? (
-          <div className="space-y-6">
-            {Object.entries(selectedPlugin.capabilities).map(([type, items]) => {
-              if (!items || (typeof items === 'object' && Object.keys(items).length === 0)) return null;
-              const typeInfo = getCapabilityTypeInfo(type);
-
-              return (
-                <div key={type}>
-                  <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                    <span>{typeInfo.icon}</span>
-                    {typeInfo.name}
-                  </h3>
-
-                  {Array.isArray(items) ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {items.map((item: any) => (
-                        <div
-                          key={item.name || item}
-                          className="flex items-center justify-between p-3 bg-zinc-50 rounded hover:bg-zinc-100"
-                        >
-                          <div className="font-medium">{item.name || item}</div>
-                          <button
-                            onClick={() => handleDownloadCapability(selectedPlugin, type, item.name || item)}
-                            className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
-                          >
-                            下载到能力库
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : typeof items === 'object' && (
-                    <div className="space-y-2">
-                      {Object.entries(items).map(([name, path]) => (
-                        <div
-                          key={name}
-                          className="flex items-center justify-between p-3 bg-zinc-50 rounded hover:bg-zinc-100"
-                        >
-                          <div>
-                            <div className="font-medium">{name}</div>
-                            <div className="text-xs text-zinc-500">{path}</div>
-                          </div>
-                          <button
-                            onClick={() => handleDownloadCapability(selectedPlugin, type, name)}
-                            className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
-                          >
-                            下载到能力库
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <div className="text-zinc-500 mb-4">
-              📦 安装插件后可查看其包含的能力（Skills、Commands、Agents 等）
-            </div>
-            <div className="text-sm text-zinc-400">
-              插件能力只有在安装到本地后才能查看和使用
-            </div>
-          </div>
-        )}
-      </div>
+      {/* 使用 ImprovedPluginDetailModal 显示插件详情 */}
+      <ImprovedPluginDetailModal
+        plugin={convertToPluginDetailFormat(selectedPlugin)}
+        onClose={handleClosePluginDetail}
+        getCapabilityStyle={getCapabilityStyle}
+        pluginCustomDescription={null}  // 外部市场暂不支持自定义描述
+      />
     </div>
   );
 }

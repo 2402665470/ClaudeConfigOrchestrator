@@ -83,6 +83,7 @@ export default function PluginPanelPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPlugin, setSelectedPlugin] = useState<PluginDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [customDescriptions, setCustomDescriptions] = useState<Record<string, string | null>>({});
 
   useEffect(() => {
     loadPluginLibrary();
@@ -96,6 +97,23 @@ export default function PluginPanelPage() {
       const library = await window.electronAPI.getPluginLibrary();
       console.log('[PluginPanel] 插件库加载成功:', library);
       setPluginLibrary(library);
+
+      // 加载自定义描述
+      if (library && library.plugins) {
+        const pluginIds = library.plugins.map(p => p.id);
+        console.log('[PluginPanel] 加载自定义描述...');
+        try {
+          const descriptions = await window.electronAPI.getBatchDescriptions?.(pluginIds, 'plugin');
+          if (descriptions) {
+            console.log('[PluginPanel] 自定义描述加载成功:', descriptions);
+            setCustomDescriptions(descriptions);
+          } else {
+            console.log('[PluginPanel] 没有自定义描述数据');
+          }
+        } catch (error) {
+          console.error('[PluginPanel] 加载自定义描述失败:', error);
+        }
+      }
     } catch (error: any) {
       console.error('[PluginPanel] 加载插件库失败:', error);
       setError(error.message || '加载插件库失败');
@@ -202,6 +220,7 @@ export default function PluginPanelPage() {
           <PluginCard
             key={plugin.id}
             plugin={plugin}
+            customDescription={customDescriptions[plugin.id]}
             onClick={() => setSelectedPlugin(plugin)}
           />
         ))}
@@ -213,6 +232,7 @@ export default function PluginPanelPage() {
           plugin={selectedPlugin}
           onClose={() => setSelectedPlugin(null)}
           getCapabilityStyle={getCapabilityStyle}
+          pluginCustomDescription={customDescriptions[selectedPlugin.id]}
         />
       )}
     </div>
@@ -220,7 +240,11 @@ export default function PluginPanelPage() {
 }
 
 // 插件卡片组件
-function PluginCard({ plugin, onClick }: { plugin: PluginDetail; onClick: () => void }) {
+function PluginCard({ plugin, customDescription, onClick }: {
+  plugin: PluginDetail;
+  customDescription?: string | null;
+  onClick: () => void;
+}) {
   return (
     <div
       className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-gray-200"
@@ -238,10 +262,17 @@ function PluginCard({ plugin, onClick }: { plugin: PluginDetail; onClick: () => 
         </span>
       </div>
 
-      {plugin.metadata?.description && (
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-          {plugin.metadata.description}
-        </p>
+      {(plugin.metadata?.description || customDescription) && (
+        <div className="relative group">
+          <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+            {customDescription || plugin.metadata?.description}
+          </p>
+          {customDescription && (
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-blue-100 text-blue-700">
+              自定义
+            </span>
+          )}
+        </div>
       )}
 
       <div className="flex items-center justify-between text-sm text-gray-500 mb-3">

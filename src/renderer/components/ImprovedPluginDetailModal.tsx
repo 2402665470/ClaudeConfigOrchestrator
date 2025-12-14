@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import DescriptionToggle from './DescriptionToggle';
+import DescriptionEditor from './DescriptionEditor';
 
 // 可展开文本组件
 const ExpandableText = ({
@@ -127,14 +129,145 @@ interface Props {
   plugin: PluginDetail;
   onClose: () => void;
   getCapabilityStyle: (type: string) => { icon: string; color: string };
+  pluginCustomDescription?: string | null;
 }
 
 export default function ImprovedPluginDetailModal({
   plugin,
   onClose,
-  getCapabilityStyle
+  getCapabilityStyle,
+  pluginCustomDescription: initialCustomDescription
 }: Props) {
   const [activeTab, setActiveTab] = useState<string>('all');
+  const [pluginCustomDescription, setPluginCustomDescription] = useState<string | null>(initialCustomDescription || null);
+  const [isEditingPluginDesc, setIsEditingPluginDesc] = useState(false);
+  const [capabilityCustomDescriptions, setCapabilityCustomDescriptions] = useState<Record<string, string | null>>({});
+  const [editingCapability, setEditingCapability] = useState<{ id: string; name: string; type: string; description: string } | null>(null);
+
+  // 加载插件自定义描述
+  useEffect(() => {
+    const loadPluginDescription = async () => {
+      try {
+        // 优先使用传入的自定义描述，如果没有则从API加载
+        const customDesc = initialCustomDescription || await window.electronAPI.getPluginDescription?.(plugin.id);
+        setPluginCustomDescription(customDesc);
+      } catch (error) {
+        console.error('Failed to load plugin custom description:', error);
+      }
+    };
+    loadPluginDescription();
+  }, [plugin.id, initialCustomDescription]);
+
+  // 加载能力的自定义描述
+  useEffect(() => {
+    const loadCapabilityDescriptions = async () => {
+      try {
+        // 收集所有能力的ID
+        const allCapabilityIds: string[] = [];
+
+        Object.entries(plugin.capabilities).forEach(([type, items]) => {
+          if (items && items.length > 0) {
+            items.forEach((item: any) => {
+              // 生成能力ID：pluginId:type:name
+              const capabilityId = `${plugin.id}:${type}:${item.name}`;
+              allCapabilityIds.push(capabilityId);
+            });
+          }
+        });
+
+        if (allCapabilityIds.length > 0) {
+          // 批量获取自定义描述
+          const descriptions = await window.electronAPI.getBatchDescriptions?.(allCapabilityIds, 'capability');
+          setCapabilityCustomDescriptions(descriptions || {});
+        }
+      } catch (error) {
+        console.error('Failed to load capability custom descriptions:', error);
+      }
+    };
+    loadCapabilityDescriptions();
+  }, [plugin.id, plugin.capabilities]);
+
+  // 保存插件自定义描述
+  const handleSavePluginDescription = async (description: string) => {
+    try {
+      const result = await window.electronAPI.setPluginDescription?.(plugin.id, description);
+      if (result?.success) {
+        setPluginCustomDescription(description);
+        setIsEditingPluginDesc(false);
+      } else {
+        alert('保存失败: ' + result?.error);
+      }
+    } catch (error) {
+      console.error('Failed to save plugin description:', error);
+      alert('保存失败');
+    }
+  };
+
+  // 删除插件自定义描述
+  const handleDeletePluginDescription = async () => {
+    try {
+      const result = await window.electronAPI.deletePluginDescription?.(plugin.id);
+      if (result?.success) {
+        setPluginCustomDescription(null);
+        setIsEditingPluginDesc(false);
+      } else {
+        alert('删除失败: ' + result?.error);
+      }
+    } catch (error) {
+      console.error('Failed to delete plugin description:', error);
+      alert('删除失败');
+    }
+  };
+
+  // 开始编辑能力描述
+  const handleEditCapability = (type: string, item: any) => {
+    const capabilityId = `${plugin.id}:${type}:${item.name}`;
+    setEditingCapability({
+      id: capabilityId,
+      name: item.name,
+      type: type,
+      description: item.description || ''
+    });
+  };
+
+  // 保存能力自定义描述
+  const handleSaveCapabilityDescription = async (capabilityId: string, description: string) => {
+    try {
+      const result = await window.electronAPI.setCapabilityDescription?.(capabilityId, description);
+      if (result?.success) {
+        setCapabilityCustomDescriptions(prev => ({
+          ...prev,
+          [capabilityId]: description
+        }));
+        setEditingCapability(null);
+      } else {
+        alert('保存失败: ' + result?.error);
+      }
+    } catch (error) {
+      console.error('Failed to save capability description:', error);
+      alert('保存失败');
+    }
+  };
+
+  // 删除能力自定义描述
+  const handleDeleteCapabilityDescription = async (capabilityId: string) => {
+    try {
+      const result = await window.electronAPI.deleteCapabilityDescription?.(capabilityId);
+      if (result?.success) {
+        setCapabilityCustomDescriptions(prev => {
+          const newDesc = { ...prev };
+          delete newDesc[capabilityId];
+          return newDesc;
+        });
+        setEditingCapability(null);
+      } else {
+        alert('删除失败: ' + result?.error);
+      }
+    } catch (error) {
+      console.error('Failed to delete capability description:', error);
+      alert('删除失败');
+    }
+  };
 
   // 过滤有内容的类型
   const availableTypes = Object.entries(plugin.capabilities)
@@ -188,13 +321,40 @@ export default function ImprovedPluginDetailModal({
           <div className="px-8 py-6">
             {/* 插件基本信息卡片 */}
             <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl p-8 mb-8 border border-gray-200 shadow-sm">
-              {plugin.metadata?.description && (
-                <div className="mb-8">
-                  <ExpandableText className="text-gray-700 text-lg leading-relaxed">
-                    {plugin.metadata.description}
-                  </ExpandableText>
-                </div>
-              )}
+              {/* 插件描述部分 */}
+              <div className="mb-8">
+                {isEditingPluginDesc ? (
+                  <DescriptionEditor
+                    type="plugin"
+                    id={plugin.id}
+                    originalDescription={plugin.metadata?.description || ''}
+                    customDescription={pluginCustomDescription}
+                    onSave={handleSavePluginDescription}
+                    onCancel={() => setIsEditingPluginDesc(false)}
+                    onDelete={pluginCustomDescription ? handleDeletePluginDescription : undefined}
+                  />
+                ) : (
+                  <>
+                    {plugin.metadata?.description || pluginCustomDescription ? (
+                      <DescriptionToggle
+                        originalDescription={plugin.metadata?.description || ''}
+                        customDescription={pluginCustomDescription}
+                        onEdit={() => setIsEditingPluginDesc(true)}
+                      />
+                    ) : (
+                      <div className="text-gray-500 italic mb-4">
+                        <span>暂无描述</span>
+                        <button
+                          onClick={() => setIsEditingPluginDesc(true)}
+                          className="ml-2 text-blue-600 hover:text-blue-700"
+                        >
+                          添加自定义描述
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="text-center bg-white rounded-xl p-4 shadow-sm">
@@ -291,9 +451,11 @@ export default function ImprovedPluginDetailModal({
                               )}
                             </div>
 
-                            <ExpandableText className="text-gray-600 leading-relaxed mb-4">
-                              {item.description}
-                            </ExpandableText>
+                            <DescriptionToggle
+                              originalDescription={item.description || ''}
+                              customDescription={capabilityCustomDescriptions[`${plugin.id}:${type}:${item.name}`]}
+                              onEdit={() => handleEditCapability(type, item)}
+                            />
 
                             {/* 示例命令 */}
                             {(item as any).examples && (item as any).examples.length > 0 && (
@@ -355,6 +517,32 @@ export default function ImprovedPluginDetailModal({
             </div>
           </div>
         </div>
+
+        {/* 能力描述编辑模态框 */}
+        {editingCapability && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[60]">
+            <div className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <h3 className="text-xl font-bold mb-4">
+                编辑能力描述 - {editingCapability.name}
+              </h3>
+              <p className="text-sm text-gray-500 mb-4">
+                类型: {editingCapability.type} | ID: {editingCapability.id}
+              </p>
+              <DescriptionEditor
+                type="capability"
+                id={editingCapability.id}
+                originalDescription={editingCapability.description}
+                customDescription={capabilityCustomDescriptions[editingCapability.id]}
+                onSave={(desc) => handleSaveCapabilityDescription(editingCapability.id, desc)}
+                onCancel={() => setEditingCapability(null)}
+                onDelete={capabilityCustomDescriptions[editingCapability.id]
+                  ? () => handleDeleteCapabilityDescription(editingCapability.id)
+                  : undefined
+                }
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { ConfigReaderService } from './services/ConfigReaderService';
 import { ProjectScannerService } from './services/ProjectScannerService';
 import { PluginLibraryService } from './services/PluginLibraryService';
 import { ClaudeProjectScanner } from './services/ClaudeProjectScanner';
+import { descriptionManager } from './services/DescriptionManager';
 
 const DATA_PATH = path.join(app.getPath('userData'), 'data.json');
 
@@ -230,6 +231,23 @@ ipcMain.handle('claude:installPlugin', async (_, pluginId: string, marketplace: 
     return { success: true };
   } catch (error: any) {
     console.error('Failed to install plugin:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// 使用 Claude CLI 卸载插件
+ipcMain.handle('claude:uninstallPlugin', async (_, pluginId: string, scope: 'user' | 'project' | 'local' = 'user', projectPath?: string) => {
+  try {
+    await claudeCli.uninstallPlugin(pluginId, scope, projectPath);
+
+    // 如果是项目级卸载，需要从项目设置中移除插件
+    if (scope === 'project' && projectPath) {
+      await configReader.disablePluginInProject(projectPath, pluginId);
+    }
+
+    return { success: true };
+  } catch (error: any) {
+    console.error('Failed to uninstall plugin:', error);
     return { success: false, error: error.message };
   }
 });
@@ -472,6 +490,85 @@ ipcMain.handle('scenes:delete', async (_, sceneId: string) => {
     return { success: true };
   } catch (error: any) {
     console.error('Failed to delete scene:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+/* -------------------- 自定义描述管理 -------------------- */
+
+// 获取插件自定义描述
+ipcMain.handle('custom:getPluginDescription', async (_, pluginId: string) => {
+  try {
+    const description = await descriptionManager.getPluginDescription(pluginId);
+    return description;
+  } catch (error: any) {
+    console.error('Failed to get plugin description:', error);
+    return null;
+  }
+});
+
+// 设置插件自定义描述
+ipcMain.handle('custom:setPluginDescription', async (_, pluginId: string, description: string) => {
+  try {
+    await descriptionManager.setPluginDescription(pluginId, description);
+    return { success: true };
+  } catch (error: any) {
+    console.error('Failed to set plugin description:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// 获取能力自定义描述
+ipcMain.handle('custom:getCapabilityDescription', async (_, capabilityId: string) => {
+  try {
+    const description = await descriptionManager.getCapabilityDescription(capabilityId);
+    return description;
+  } catch (error: any) {
+    console.error('Failed to get capability description:', error);
+    return null;
+  }
+});
+
+// 设置能力自定义描述
+ipcMain.handle('custom:setCapabilityDescription', async (_, capabilityId: string, description: string) => {
+  try {
+    await descriptionManager.setCapabilityDescription(capabilityId, description);
+    return { success: true };
+  } catch (error: any) {
+    console.error('Failed to set capability description:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// 批量获取描述
+ipcMain.handle('custom:getBatchDescriptions', async (_, ids: string[], type: 'plugin' | 'capability') => {
+  try {
+    const descriptions = await descriptionManager.getBatchDescriptions(ids, type);
+    return descriptions;
+  } catch (error: any) {
+    console.error('Failed to get batch descriptions:', error);
+    return {};
+  }
+});
+
+// 删除插件自定义描述
+ipcMain.handle('custom:deletePluginDescription', async (_, pluginId: string) => {
+  try {
+    await descriptionManager.deletePluginDescription(pluginId);
+    return { success: true };
+  } catch (error: any) {
+    console.error('Failed to delete plugin description:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// 删除能力自定义描述
+ipcMain.handle('custom:deleteCapabilityDescription', async (_, capabilityId: string) => {
+  try {
+    await descriptionManager.deleteCapabilityDescription(capabilityId);
+    return { success: true };
+  } catch (error: any) {
+    console.error('Failed to delete capability description:', error);
     return { success: false, error: error.message };
   }
 });

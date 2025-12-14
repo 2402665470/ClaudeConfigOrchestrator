@@ -42,6 +42,14 @@ declare global {
 
       // 编辑器
       openInEditor: (filePath: string) => Promise<boolean>
+
+      // 自定义描述管理
+      getPluginDescription: (pluginId: string) => Promise<string | null>
+      setPluginDescription: (pluginId: string, description: string) => Promise<{ success: boolean; error?: string } | null>
+      deletePluginDescription: (pluginId: string) => Promise<{ success: boolean; error?: string } | null>
+      getCapabilityDescription: (capabilityId: string) => Promise<string | null>
+      setCapabilityDescription: (capabilityId: string, description: string) => Promise<{ success: boolean; error?: string } | null>
+      deleteCapabilityDescription: (capabilityId: string) => Promise<{ success: boolean; error?: string } | null>
     }
   }
 }
@@ -124,19 +132,19 @@ export default function App() {
             className={`block w-full text-left px-3 py-2 rounded ${tab === 'markets' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
             onClick={() => setTab('markets')}
           >
-            外部市场
+            市场
+          </button>
+          <button
+            className={`block w-full text-left px-3 py-2 rounded ${tab === 'plugins' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
+            onClick={() => setTab('plugins')}
+          >
+            插件
           </button>
           <button
             className={`block w-full text-left px-3 py-2 rounded ${tab === 'library' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
             onClick={() => setTab('library')}
           >
-            能力库
-          </button>
-          <button
-            className={`block w-full text-left px-3 py-2 rounded ${tab === 'projects' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
-            onClick={() => setTab('projects')}
-          >
-            项目列表
+            技能
           </button>
           <button
             className={`block w-full text-left px-3 py-2 rounded ${tab === 'scenes' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
@@ -145,10 +153,10 @@ export default function App() {
             场景
           </button>
           <button
-            className={`block w-full text-left px-3 py-2 rounded ${tab === 'plugins' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
-            onClick={() => setTab('plugins')}
+            className={`block w-full text-left px-3 py-2 rounded ${tab === 'projects' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}
+            onClick={() => setTab('projects')}
           >
-            插件面板
+            项目
           </button>
           <button
             className={`block w-full text-left px-3 py-2 rounded ${tab === 'settings' ? 'bg-black text-white' : 'hover:bg-gray-100'}`}

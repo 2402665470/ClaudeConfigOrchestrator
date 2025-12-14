@@ -87,7 +87,13 @@
       "mcp__vision__analyze_image",
       "WebFetch(domain:github.com)",
       "Bash(cd:*)",
-      "mcp__plugin_claude-code-settings_exa__get_code_context_exa"
+      "mcp__plugin_claude-code-settings_exa__get_code_context_exa",
+      "Bash(cmd:*)",
+      "Bash(tskill:*)",
+      "Bash(chmod:*)",
+      "Bash(./restart-app.bat:*)",
+      "Skill(plan:brainstorming)",
+      "Bash(rm:*)"
     ],
     "deny": [
       "Read(./.env*)",

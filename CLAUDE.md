@@ -221,6 +221,28 @@ npm run dev
    - 检查 package.json 有效（cat package.json）
    - 重新安装依赖（npm install）
 
+5. **重启应用**
+
+   **方法一：使用重启脚本（推荐）**
+   ```bash
+   # Windows
+   ./restart-app.bat
+
+   # Linux/Mac
+   ./restart-app.sh
+   ```
+
+   重启脚本会自动：
+   - 检查并清理占用5173端口的进程
+   - 等待端口完全释放
+   - 重新启动应用
+
+   **方法二：手动重启**
+   ```bash
+   # 切换到项目目录并重启
+   cd D:/MyProject/claude && npm run dev
+   ```
+
 ### 📝 记住这个原则
 
 **npm 需要 node_modules 才能工作**。这是所有问题的根源。

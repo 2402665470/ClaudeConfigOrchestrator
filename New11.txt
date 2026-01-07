@@ -1,0 +1,87 @@
+
+
+1.把这个项目所有的文档都移动到一个bak文件夹下 
+2.现有的代码其中有一些依然可以作为我们新项目的实现参考 但是与我们需求冲突的部分则不可 我倾向于重新创建一个新的项目 技术栈依然可以参考旧的项目
+3. 我最终是要使用kiro 的specs模式进行开发的 你最主要的任务是协助我整理一份符合我想法的最终产品PDR需求文档
+
+
+
+问题1: 导入插件不只一种方式 我还可以使用 claude 添加市场的命令  示例  /plugin marketplace add anthropics/claude-code
+会自动解析这个市场下有的插件 并且在面板可以选择其中一个或者多个插件进行下载 
+
+我提供的github仓库地址也是这个插件的市场的地址 即就是这个仓库的地址 会自动解析这个仓库下有哪些插件 依然是选择插件下载 
+示例  https://github.com/anthropics/claude-code 可以解析出来这个仓库下的插件 
+
+问题2: skills 本质是一个文件夹 内部的所有东西都是构成skills必须的 所有提取时要注意
+
+问题3: 需要添加一个功能用来自定义或者上传能力 例如上传一个 skills.zip的压缩包 可以被解析成一个 skills
+也可以在面板上输入一串json 可以被解析为 mcp能力或者是 setting 
+
+问题4: setting能力是一种settings.json下的对象 示例 permissions是一个setting类型的能力 用户可以自定义多种setting 
+应用时会动态新增到用户指定的项目下的settings.json
+
+这是用户可能上传的一个setting  在功能界面上有一个编辑面板 可以输入这样的字符串保存作为一种能力 保存时让用户自己选择解析为 setting还是hook,mcp即可 
+"permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Read(~/.zshrc)"
+    ],
+    "deny": [
+      "Bash(curl:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  }
+
+
+
+
+settings.json 示例
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Read(~/.zshrc)"
+    ],
+    "deny": [
+      "Bash(curl:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_METRICS_EXPORTER": "otlp"
+  },
+  "companyAnnouncements": [
+    "Welcome to Acme Corp! Review our code guidelines at docs.acme.com",
+    "Reminder: Code reviews required for all PRs",
+    "New security policy in effect"
+  ]
+}
+
+
+
+如果是mcp类型的则是 
+
+"n8n-remote": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "connect",
+        "http://localhost:3003/mcp"
+      ],
+      "env": {
+        "MCP_AUTH_TOKEN": "0he8mAm6Z1ptH9w9yMnZpwyA7jTcTxifCfKjIYeCLhQ="
+      }
+    }
+
+问题5: 私人市场的能力默认显示中文描述 能力以卡片形式展示 描述上有切换按钮 点击后切换为原文 并且有编辑按钮 可以编辑中文描述 每个能力可以有打开文件夹的功能 点击后打开当前能力所在目录的文件夹 
+
+问题6:你对于这个工具的功能 还有什么建议?
+

@@ -10,16 +10,6 @@
       "projectConfigChanges": true
     }
   },
-  "security": {
-    "allowUnsignedPlugins": true,
-    "allowFilesystemAccess": true,
-    "allowNetworkAccess": true,
-    "allowSystemCommands": true
-  },
-  "ui": {
-    "skipConfirmations": true,
-    "showWarnings": false
-  },
   "enabledPlugins": {
     "spec-kit-skill@claude-code-settings": true,
     "autonomous-skill@claude-code-settings": true,
@@ -33,13 +23,25 @@
     "claude-code-settings@claude-code-settings": true,
     "tdd-workflows@claude-code-workflows": true,
     "debugging-toolkit@claude-code-workflows": true,
-    "hookify@claude-code-plugins": true,
+    "hookify@claude-code-plugins": false,
     "dependency-management@claude-code-workflows": true,
     "plugin-dev@claude-code-plugins": true,
     "code-review@claude-code-plugins": true,
     "frontend-design@claude-code-plugins": true,
     "explanatory-output-style@claude-code-plugins": true,
     "error-debugging@claude-code-workflows": true,
-    "cicd-automation@claude-code-workflows": true
+    "cicd-automation@claude-code-workflows": true,
+    "spec-workflow@skilled-intelligence": true,
+    "code-intelligence@skilled-intelligence": true
+  },
+  "security": {
+    "allowUnsignedPlugins": true,
+    "allowFilesystemAccess": true,
+    "allowNetworkAccess": true,
+    "allowSystemCommands": true
+  },
+  "ui": {
+    "skipConfirmations": true,
+    "showWarnings": false
   }
 }

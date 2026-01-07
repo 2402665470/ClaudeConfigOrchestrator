@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "strict": true,
@@ -15,7 +15,13 @@
     "baseUrl": ".",
     "paths": {
       "@common/*": ["src/common/*"],
-      "@renderer/*": ["src/renderer/*"]
+      "@renderer/*": ["src/renderer/*"],
+      "@/components/*": ["src/renderer/components/*"],
+      "@/pages/*": ["src/renderer/pages/*"],
+      "@/stores/*": ["src/renderer/stores/*"],
+      "@/services/*": ["src/renderer/services/*"],
+      "@/types/*": ["src/renderer/types/*"],
+      "@/utils/*": ["src/renderer/utils/*"]
     }
   },
   "include": ["src/**/*", "vite.config.ts"],

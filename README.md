@@ -1,38 +1,40 @@
-# Claude Config Manager
+# Claude Config Orchestrator
 
-Electron + React 桌面端 Claude 插件/配置分发管理系统。
+Claude 配置编排平台 - 一个桌面应用程序，用于收集、整理和部署 Claude 的各种能力配置。
 
-## 快速开始
+## 核心理念
 
-```bash
-npm install
-npm run dev      # 同时启动主进程与渲染层开发服务器
-npm run build    # 构建生产版本
-npm run dist     # 打包安装包
-```
+| 传统方式 | 本平台方式 |
+|---------|-----------|
+| 安装整个插件 | 提取原子能力 |
+| 全局安装到 Claude | 配置注入到项目 |
+| 依赖 Claude CLI | 直接生成配置文件 |
+| 英文界面 | 中文化支持 |
 
-## 功能
+## 主要功能
 
-- 本地插件市场扫描（读取本地目录 + plugin.json）
-- 项目管理（添加、浏览、搜索）
-- 插件安装（智能合并 claude.json 与文件复制）
-- 设置（配置市场目录）
+1. **能力原子化** - 将外部插件拆解为独立能力（Commands、Skills、Hooks、MCP Servers）
+2. **私人市场** - 本地维护的能力库，与 Claude 全局环境隔离
+3. **中文化** - 所有能力支持自定义中文名称和描述
+4. **场景编排** - 将能力组合成场景，一键应用到项目
+5. **配置注入** - 直接生成 `.claude/` 配置文件，无需全局安装
 
 ## 技术栈
 
-- Electron 28 + React 18 + TypeScript（strict）
+- Electron + React 18 + TypeScript
 - Vite + Tailwind CSS
-- Zustand 状态管理
-- IPC 通信：主进程负责所有文件系统操作
+- Ant Design + Zustand
 
-## 项目结构
+## 开发
 
+```bash
+npm install
+npm run dev
 ```
-src/
-  main/          # Electron 主进程
-  renderer/      # React 渲染层
-  common/        # 共享类型定义
-```
+
+## 文档
+
+- [需求文档](.kiro/specs/claude-config-orchestrator/requirements.md)
 
 ## 许可证
 

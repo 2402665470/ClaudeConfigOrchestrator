@@ -3,11 +3,13 @@ import path from 'node:path'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  root: '.',
+  root: 'src/renderer',
+  base: './',
   plugins: [react()],
   resolve: {
     alias: {
-      '@common': path.resolve(__dirname, 'src/common')
+      '@common': path.resolve(__dirname, 'src/common'),
+      '@': path.resolve(__dirname, 'src/renderer')
     }
   },
   server: {
@@ -15,6 +17,7 @@ export default defineConfig({
     strictPort: true
   },
   build: {
-    outDir: 'dist/renderer'
+    outDir: '../../dist/renderer',
+    emptyOutDir: true
   }
 })

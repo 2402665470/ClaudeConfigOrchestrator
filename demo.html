@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Config Orchestrator - 演示版</title>
+    <link href="https://cdn.jsdelivr.net/npm/antd@5.12.8/dist/reset.css" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/antd@5.12.8/dist/antd.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .demo-container {
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 240px;
+            background: #001529;
+            color: white;
+        }
+        .main-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .logo {
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #002140;
+        }
+        .logo h1 {
+            color: white;
+            margin: 0;
+            font-size: 16px;
+        }
+        .menu-item {
+            padding: 12px 24px;
+            cursor: pointer;
+            border-bottom: 1px solid #002140;
+            transition: background-color 0.3s;
+        }
+        .menu-item:hover {
+            background: #1890ff;
+        }
+        .menu-item.active {
+            background: #1890ff;
+        }
+        .page-header {
+            margin-bottom: 24px;
+        }
+        .capability-card {
+            margin-bottom: 16px;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 16px;
+            background: white;
+        }
+        .capability-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        .type-skill { background: #e6f7ff; color: #1890ff; }
+        .type-command { background: #f6ffed; color: #52c41a; }
+        .type-hook { background: #fff2e8; color: #fa8c16; }
+        .type-mcp { background: #f9f0ff; color: #722ed1; }
+        .stats-card {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+        const { Layout, Menu, Card, Button, Input, Select, Tag, Typography, Row, Col, Statistic, Progress, Space, Tabs } = antd;
+        const { Header, Sider, Content } = Layout;
+        const { Title, Text } = Typography;
+        const { Search } = Input;
+        const { Option } = Select;
+
+        // 模拟数据
+        const mockCapabilities = [
+            {
+                id: '1',
+                name: 'Git 助手',
+                type: 'skill',
+                description: '帮助管理 Git 仓库，提供智能提交建议和分支管理',
+                chineseDescription: '智能 Git 管理助手，提供代码提交建议和分支操作指导',
+                author: 'Claude Team',
+                version: '1.2.0'
+            },
+            {
+                id: '2',
+                name: '代码审查',
+                type: 'command',
+                description: 'Automated code review and suggestions',
+                chineseDescription: '自动化代码审查工具，提供代码质量建议和最佳实践指导',
+                author: 'DevTools',
+                version: '2.1.0'
+            },
+            {
+                id: '3',
+                name: '项目初始化',
+                type: 'hook',
+                description: 'Initialize new projects with templates',
+                chineseDescription: '使用模板快速初始化新项目，支持多种框架和配置',
+                author: 'Scaffold',
+                version: '1.0.5'
+            },
+            {
+                id: '4',
+                name: 'API 文档生成',
+                type: 'mcp',
+                description: 'Generate API documentation automatically',
+                chineseDescription: '自动生成 API 文档，支持多种格式输出和实时更新',
+                author: 'DocGen',
+                version: '3.0.1'
+            }
+        ];
+
+        const mockProjects = [
+            {
+                id: '1',
+                name: '电商网站',
+                path: '/Users/dev/projects/ecommerce',
+                capabilities: ['Git 助手', '代码审查'],
+                lastUpdated: '2024-12-18'
+            },
+            {
+                id: '2',
+                name: 'API 服务',
+                path: '/Users/dev/projects/api-service',
+                capabilities: ['API 文档生成', '项目初始化'],
+                lastUpdated: '2024-12-17'
+            }
+        ];
+
+        function App() {
+            const [currentPage, setCurrentPage] = useState('market');
+            const [searchTerm, setSearchTerm] = useState('');
+            const [typeFilter, setTypeFilter] = useState('all');
+
+            const filteredCapabilities = mockCapabilities.filter(cap => {
+                const matchesSearch = cap.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    cap.chineseDescription.toLowerCase().includes(searchTerm.toLowerCase());
+                const matchesType = typeFilter === 'all' || cap.type === typeFilter;
+                return matchesSearch && matchesType;
+            });
+
+            const renderMarketPage = () => (
+                <div>
+                    <div className="page-header">
+                        <Title level={2}>私人市场</Title>
+                        <Text type="secondary">管理您的 Claude 能力库</Text>
+                    </div>
+                    
+                    <Row gutter={16} style={{ marginBottom: 24 }}>
+                        <Col span={12}>
+                            <Search
+                                placeholder="搜索能力..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                style={{ width: '100%' }}
+                            />
+                        </Col>
+                        <Col span={6}>
+                            <Select
+                                value={typeFilter}
+                                onChange={setTypeFilter}
+                                style={{ width: '100%' }}
+                            >
+                                <Option value="all">所有类型</Option>
+                                <Option value="skill">Skill</Option>
+                                <Option value="command">Command</Option>
+                                <Option value="hook">Hook</Option>
+                                <Option value="mcp">MCP</Option>
+                            </Select>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={16}>
+                        {filteredCapabilities.map(cap => (
+                            <Col span={12} key={cap.id}>
+                                <Card
+                                    title={
+                                        <Space>
+                                            <Tag className={`type-${cap.type}`}>{cap.type.toUpperCase()}</Tag>
+                                            {cap.name}
+                                        </Space>
+                                    }
+                                    extra={<Button type="link">编辑</Button>}
+                                    style={{ marginBottom: 16 }}
+                                >
+                                    <Text>{cap.chineseDescription}</Text>
+                                    <div style={{ marginTop: 12 }}>
+                                        <Text type="secondary">作者: {cap.author} | 版本: {cap.version}</Text>
+                                    </div>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                </div>
+            );
+
+            const renderProjectsPage = () => (
+                <div>
+                    <div className="page-header">
+                        <Title level={2}>项目管理</Title>
+                        <Text type="secondary">管理您的项目配置</Text>
+                    </div>
+
+                    <Row gutter={16}>
+                        {mockProjects.map(project => (
+                            <Col span={12} key={project.id}>
+                                <Card
+                                    title={project.name}
+                                    extra={<Button type="primary">配置</Button>}
+                                    style={{ marginBottom: 16 }}
+                                >
+                                    <p><Text strong>路径:</Text> {project.path}</p>
+                                    <p><Text strong>已启用能力:</Text></p>
+                                    <Space wrap>
+                                        {project.capabilities.map(cap => (
+                                            <Tag key={cap} color="blue">{cap}</Tag>
+                                        ))}
+                                    </Space>
+                                    <div style={{ marginTop: 12 }}>
+                                        <Text type="secondary">最后更新: {project.lastUpdated}</Text>
+                                    </div>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                </div>
+            );
+
+            const renderImportPage = () => (
+                <div>
+                    <div className="page-header">
+                        <Title level={2}>导入能力</Title>
+                        <Text type="secondary">从各种来源导入 Claude 能力</Text>
+                    </div>
+
+                    <Tabs
+                        items={[
+                            {
+                                key: 'marketplace',
+                                label: '市场地址',
+                                children: (
+                                    <Card>
+                                        <Space direction="vertical" style={{ width: '100%' }}>
+                                            <Input.Group compact>
+                                                <Input
+                                                    style={{ width: 'calc(100% - 100px)' }}
+                                                    placeholder="输入 GitHub 地址或 owner/repo 格式"
+                                                />
+                                                <Button type="primary">解析</Button>
+                                            </Input.Group>
+                                            <Text type="secondary">
+                                                支持格式: github.com/owner/repo 或 owner/repo
+                                            </Text>
+                                        </Space>
+                                    </Card>
+                                )
+                            },
+                            {
+                                key: 'local',
+                                label: '本地目录',
+                                children: (
+                                    <Card>
+                                        <Space direction="vertical" style={{ width: '100%' }}>
+                                            <Button type="dashed" block>选择本地目录</Button>
+                                            <Text type="secondary">
+                                                选择包含 .claude 配置的本地目录
+                                            </Text>
+                                        </Space>
+                                    </Card>
+                                )
+                            },
+                            {
+                                key: 'http',
+                                label: 'HTTP 链接',
+                                children: (
+                                    <Card>
+                                        <Space direction="vertical" style={{ width: '100%' }}>
+                                            <Input.Group compact>
+                                                <Input
+                                                    style={{ width: 'calc(100% - 100px)' }}
+                                                    placeholder="输入 HTTP/HTTPS 下载链接"
+                                                />
+                                                <Button type="primary">下载</Button>
+                                            </Input.Group>
+                                            <Text type="secondary">
+                                                支持 .tar.gz 和 .zip 格式
+                                            </Text>
+                                        </Space>
+                                    </Card>
+                                )
+                            }
+                        ]}
+                    />
+                </div>
+            );
+
+            const renderStatsPage = () => (
+                <div>
+                    <div className="page-header">
+                        <Title level={2}>缓存管理</Title>
+                        <Text type="secondary">查看和管理系统缓存</Text>
+                    </div>
+
+                    <Row gutter={16}>
+                        <Col span={8}>
+                            <Card>
+                                <Statistic title="插件缓存" value={15} suffix="个" />
+                                <Progress percent={65} size="small" />
+                                <Text type="secondary">总大小: 245 MB</Text>
+                            </Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card>
+                                <Statistic title="翻译缓存" value={128} suffix="条" />
+                                <Progress percent={45} size="small" />
+                                <Text type="secondary">命中率: 87%</Text>
+                            </Card>
+                        </Col>
+                        <Col span={8}>
+                            <Card>
+                                <Statistic title="备份文件" value={8} suffix="个" />
+                                <Progress percent={30} size="small" />
+                                <Text type="secondary">总大小: 52 MB</Text>
+                            </Card>
+                        </Col>
+                    </Row>
+
+                    <Card title="缓存操作" style={{ marginTop: 24 }}>
+                        <Space>
+                            <Button>清理未使用缓存</Button>
+                            <Button type="primary" danger>清空所有缓存</Button>
+                            <Button>导出缓存统计</Button>
+                        </Space>
+                    </Card>
+                </div>
+            );
+
+            const menuItems = [
+                { key: 'market', label: '私人市场', icon: '🏪' },
+                { key: 'import', label: '导入能力', icon: '📥' },
+                { key: 'projects', label: '项目管理', icon: '📁' },
+                { key: 'templates', label: '配置模板', icon: '📋' },
+                { key: 'cache', label: '缓存管理', icon: '💾' },
+                { key: 'settings', label: '应用设置', icon: '⚙️' }
+            ];
+
+            const renderCurrentPage = () => {
+                switch (currentPage) {
+                    case 'market': return renderMarketPage();
+                    case 'import': return renderImportPage();
+                    case 'projects': return renderProjectsPage();
+                    case 'cache': return renderStatsPage();
+                    default: 
+                        return (
+                            <div style={{ textAlign: 'center', padding: '100px 0' }}>
+                                <Title level={3}>功能开发中...</Title>
+                                <Text type="secondary">该页面正在开发中，敬请期待</Text>
+                            </div>
+                        );
+                }
+            };
+
+            return (
+                <Layout style={{ height: '100vh' }}>
+                    <Sider width={240} theme="dark">
+                        <div style={{ padding: '16px', textAlign: 'center', borderBottom: '1px solid #002140' }}>
+                            <Title level={4} style={{ color: 'white', margin: 0 }}>
+                                Claude Config<br/>Orchestrator
+                            </Title>
+                        </div>
+                        <Menu
+                            theme="dark"
+                            mode="inline"
+                            selectedKeys={[currentPage]}
+                            items={menuItems.map(item => ({
+                                key: item.key,
+                                label: (
+                                    <span>
+                                        <span style={{ marginRight: 8 }}>{item.icon}</span>
+                                        {item.label}
+                                    </span>
+                                ),
+                                onClick: () => setCurrentPage(item.key)
+                            }))}
+                        />
+                    </Sider>
+                    <Layout>
+                        <Content style={{ padding: '24px', overflow: 'auto' }}>
+                            {renderCurrentPage()}
+                        </Content>
+                    </Layout>
+                </Layout>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
